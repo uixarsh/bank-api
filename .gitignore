@@ -1,6 +1,8 @@
 .DS_Store
 .idea
 .vscode
+.envs/*
+!.envs/.env.example 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
