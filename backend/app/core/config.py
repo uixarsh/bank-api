@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     PROJECT_VERSION: str = ""
     API_V1_STR: str = ""
     SITE_NAME: str = ""
+    DATABASE_URL: str = ""
     
 
 settings = Settings()
