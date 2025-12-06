@@ -8,7 +8,7 @@ log:
 
 accessLog:
   format: json
-  filePat: /var/log/traefix/access.log
+  filePath: /var/log/traefix/access.log
 
 middlewares:
   retry:
