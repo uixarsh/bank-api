@@ -1,8 +1,13 @@
 import random
 import string
-from backend.app.core.config import settings
+import uuid
+import jwt
+from datetime import datetime, timedelta, timezone
+
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
+
+from backend.app.core.config import settings
 
 _ph = PasswordHasher()
 
@@ -29,3 +34,17 @@ def generate_username() -> str:
     random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=remaining_length))
     username = f"{prefix}-{random_string}"
     return username
+
+def create_activation_token(id: uuid.UUID) -> str:
+    """Create a JWT activation token."""
+    expiration = datetime.now(tz=timezone.utc) + timedelta(
+        minutes=settings.ACTIVATION_TOKEN_EXPIRATION_MINUTES
+    )
+    payload = {
+        "id": str(id),
+        "exp": expiration,
+        "type": "activation",
+        "iat": datetime.now(tz=timezone.utc),
+    }
+    token = jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
+    return token
