@@ -33,6 +33,10 @@ class Settings(BaseSettings):
     RABBITMQ_HOST: str = "rabbitmq"
     RABBITMQ_PORT: int = 5672
     RABBITMQ_USER: str = "guest"
-    RABBITMQ_PASSWORD: str = "guest"    
+    RABBITMQ_PASSWORD: str = "guest"
+
+    OTP_EXPIRATION_MINUTES: int = 2 if ENVIRONMENT == "local" else 5
+    LOGIN_ATTEMPTS: int = 3
+    LOCKOUT_DURATION_MINUTES: int = 2 if ENVIRONMENT == "local" else 5
 
 settings = Settings()
