@@ -15,6 +15,7 @@ logger = get_logger()
     retry_backoff=True,
     retry_backoff_max=60,
 )
+
 def send_email_task(
     self, *, recipients: list[NameEmail], subject: str, html_content: str, plain_content: str
 ) -> bool:

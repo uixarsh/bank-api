@@ -40,14 +40,14 @@ class RoleChoicesSchema(str, Enum):
 
 class BaseUserSchema(SQLModel):
     username: str | None = Field(default=None, max_length=50, unique=True)
-    email: EmailStr | None = Field(default=None, unique=True, index=True)
+    email: EmailStr = Field(default=None, unique=True, index=True)
     first_name: str | None = Field(max_length=30)
     middle_name: str | None = Field(default=None, max_length=30)
     last_name: str | None = Field(max_length=30)
     id_no: int = Field(unique=True, gt=0)   # gt => greater than or equal to 0
     is_active: bool = False
     is_superuser: bool = False
-    securtiy_question: SecurityQuestionsSchema = Field(max_length=30)
+    security_question: SecurityQuestionsSchema = Field(max_length=30)
     security_answer: str = Field(max_length=30)
     account_status: AccountStatusSchema = Field(default=AccountStatusSchema.INACTIVE)
     role: RoleChoicesSchema = Field(default=RoleChoicesSchema.CUSTOMER)

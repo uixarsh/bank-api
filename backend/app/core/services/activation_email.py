@@ -1,3 +1,4 @@
+from pydantic import EmailStr
 from backend.app.core.config import settings
 from backend.app.core.emails.base import EmailTemplate
 
@@ -6,7 +7,7 @@ class ActivationEmail(EmailTemplate):
     template_name_plain = "activation.txt"
     subject = "Activate Your Account"
 
-async def send_activation_email(email_to: str, token: str) -> None:
+async def send_activation_email(email_to: EmailStr, token: str) -> None:
     activation_url = (
         f"{settings.API_BASE_URL}{settings.API_V1_STR}/auth/activate/{token}"
     )

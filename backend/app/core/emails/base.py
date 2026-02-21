@@ -1,8 +1,10 @@
 from jinja2 import Environment, FileSystemLoader
+from pydantic import EmailStr
 
 from backend.app.core.emails.config import TEMPLATES_DIR
-from backend.app.core.emails.tasks import send_email_task
 from backend.app.core.logging import get_logger
+from backend.app.core.emails.tasks import send_email_task
+
 
 logger = get_logger()
 
@@ -19,7 +21,7 @@ class EmailTemplate:
     @classmethod
     async def send_email(
         cls,
-        email_to: str | list[str],
+        email_to: EmailStr | list[EmailStr],
         context: dict,
         subject_override: str | None = None,
     ) -> None:
