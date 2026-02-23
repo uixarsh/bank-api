@@ -28,7 +28,7 @@ class UserAuthService:
         return user
     
     async def get_user_by_id_no(self, id_no: int, session: AsyncSession, include_inactive: bool = False) -> User | None:
-        statement = select(User).where(User.id == id_no)
+        statement = select(User).where(User.id_no == id_no)
 
         if not include_inactive:
             statement = statement.where(User.is_active)
