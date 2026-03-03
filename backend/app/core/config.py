@@ -56,4 +56,6 @@ class Settings(BaseSettings):
 
     SIGNING_KEY: str = ""
 
+    PASSWORD_RESET_TOKEN_EXPIRATION_MINUTES: int = 3 if ENVIRONMENT == "local" else 5
+
 settings = Settings()
