@@ -1,10 +1,16 @@
 import uuid
+from typing import Optional
 from datetime import datetime, timezone
-from sqlmodel import Field, Column
+from sqlmodel import Field, Column, Relationship
 from pydantic import computed_field
 from sqlalchemy.dialects import postgresql as pg
 from sqlalchemy import text, func
 from backend.app.auth.schema import BaseUserSchema, RoleChoicesSchema
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from backend.app.user_profile.models import Profile
 
 class User(BaseUserSchema, table=True):
     id: uuid.UUID = Field(sa_column = Column(pg.UUID(as_uuid=True), primary_key=True), default_factory=uuid.uuid4)
@@ -30,6 +36,8 @@ class User(BaseUserSchema, table=True):
             onupdate=func.current_timestamp(),
         ),
     )
+
+    profile: Optional["Profile"] = Relationship(back_populates="user")
 
     @computed_field
     @property
