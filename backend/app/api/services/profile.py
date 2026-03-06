@@ -171,72 +171,72 @@ async def update_profile_image_url(
         )
 
 
-# async def get_user_with_profile(user_id: uuid.UUID, session: AsyncSession) -> User:
-#     try:
-#         statement = select(User).where(User.id == user_id)
-#         result = await session.exec(statement)
-#         user = result.first()
+async def get_user_with_profile(user_id: uuid.UUID, session: AsyncSession) -> User:
+    try:
+        statement = select(User).where(User.id == user_id)
+        result = await session.exec(statement)
+        user = result.first()
 
-#         if user:
-#             await session.refresh(user, ["profile"])
-#             return user
-#         else:
-#             raise HTTPException(
-#                 status_code=status.HTTP_404_NOT_FOUND,
-#                 detail={"status": "error", "message": "User not found"},
-#             )
-#     except Exception as e:
-#         logger.error(f"Error fetching user with profile: {str(e)}")
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail={"status": "error", "message": "Failed to fetch user with profile."},
-#         )
+        if user:
+            await session.refresh(user, ["profile"])
+            return user
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"status": "error", "message": "User not found"},
+            )
+    except Exception as e:
+        logger.error(f"Error fetching user with profile: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"status": "error", "message": "Failed to fetch user with profile."},
+        )
 
 
-# async def get_all_user_profiles(
-#     session: AsyncSession,
-#     current_user: User,
-#     skip: int = 0,
-#     limit: int = 20,
-# ) -> tuple[list[User], int]:
-#     try:
-#         if current_user.role != RoleChoicesSchema.BRANCH_MANAGER:
-#             raise HTTPException(
-#                 status_code=status.HTTP_403_FORBIDDEN,
-#                 detail={
-#                     "status": "error",
-#                     "message": "Access denied",
-#                     "action": "Only branch managers can access all profiles",
-#                 },
-#             )
+async def get_all_user_profiles(
+    session: AsyncSession,
+    current_user: User,
+    skip: int = 0,
+    limit: int = 20,
+) -> tuple[list[User], int]:
+    try:
+        if current_user.role != RoleChoicesSchema.BRANCH_MANAGER:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "status": "error",
+                    "message": "Access denied",
+                    "action": "Only branch managers can access all profiles",
+                },
+            )
 
-#         count_statement = select(User)
+        count_statement = select(User)
 
-#         result = await session.exec(count_statement)
+        result = await session.exec(count_statement)
 
-#         total_count = len(result.all())
+        total_count = len(result.all())
 
-#         statement = (
-#             select(User).offset(skip).limit(limit).order_by(col(User.created_at).desc())
-#         )
-#         result = await session.exec(statement)
+        statement = (
+            select(User).offset(skip).limit(limit).order_by(col(User.created_at).desc())
+        )
+        result = await session.exec(statement)
 
-#         users = result.all()
+        users = result.all()
 
-#         for user in users:
-#             await session.refresh(user, ["profile"])
+        for user in users:
+            await session.refresh(user, ["profile"])
 
-#         return list(users), total_count
+        return list(users), total_count
 
-#     except HTTPException as http_ex:
-#         raise http_ex
-#     except Exception as e:
-#         logger.error(f"Error fetching all user profiles: {e}")
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail={
-#                 "status": "error",
-#                 "message": "Failed to fetch user profiles",
-#                 "action": "Please try again later",
-#             },
-#         )
+    except HTTPException as http_ex:
+        raise http_ex
+    except Exception as e:
+        logger.error(f"Error fetching all user profiles: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "status": "error",
+                "message": "Failed to fetch user profiles",
+                "action": "Please try again later",
+            },
+        )
